@@ -48,8 +48,10 @@ OBJECTS_DIR   = ./
 
 ####### Files
 
-SOURCES       = main.cpp moc_calculator.cpp
-OBJECTS       = main.o \
+SOURCES       = calculator.cpp \
+		main.cpp moc_calculator.cpp
+OBJECTS       = calculator.o \
+		main.o \
 		moc_calculator.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/unix.conf \
@@ -115,8 +117,8 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exceptions.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/yacc.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf \
-		calculator.pro calculator.h \
-		ui_calculator.h main.cpp
+		calculator.pro calculator.h calculator.cpp \
+		main.cpp
 QMAKE_TARGET  = calculator
 DESTDIR       = 
 TARGET        = calculator
@@ -125,7 +127,7 @@ TARGET        = calculator
 first: all
 ####### Build rules
 
-$(TARGET): ui_calculator.h $(OBJECTS)  
+$(TARGET): ui_calculator.h ui_DialogoRed.h $(OBJECTS)  
 	$(LINK) $(LFLAGS) -o $(TARGET) $(OBJECTS) $(OBJCOMP) $(LIBS)
 
 Makefile: calculator.pro /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64/qmake.conf /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
@@ -279,9 +281,9 @@ dist: distdir FORCE
 distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
-	$(COPY_FILE) --parents calculator.h ui_calculator.h $(DISTDIR)/
-	$(COPY_FILE) --parents main.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents calculator.ui $(DISTDIR)/
+	$(COPY_FILE) --parents calculator.h $(DISTDIR)/
+	$(COPY_FILE) --parents calculator.cpp main.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents calculator.ui DialogoRed.ui $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -317,12 +319,16 @@ moc_calculator.cpp: ui_calculator.h \
 
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
-compiler_uic_make_all: ui_calculator.h
+compiler_uic_make_all: ui_calculator.h ui_DialogoRed.h
 compiler_uic_clean:
-	-$(DEL_FILE) ui_calculator.h
+	-$(DEL_FILE) ui_calculator.h ui_DialogoRed.h
 ui_calculator.h: calculator.ui \
 		/usr/lib/x86_64-linux-gnu/qt5/bin/uic
 	/usr/lib/x86_64-linux-gnu/qt5/bin/uic calculator.ui -o ui_calculator.h
+
+ui_DialogoRed.h: DialogoRed.ui \
+		/usr/lib/x86_64-linux-gnu/qt5/bin/uic
+	/usr/lib/x86_64-linux-gnu/qt5/bin/uic DialogoRed.ui -o ui_DialogoRed.h
 
 compiler_yacc_decl_make_all:
 compiler_yacc_decl_clean:
@@ -333,6 +339,10 @@ compiler_lex_clean:
 compiler_clean: compiler_moc_header_clean compiler_uic_clean 
 
 ####### Compile
+
+calculator.o: calculator.cpp calculator.h \
+		ui_calculator.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o calculator.o calculator.cpp
 
 main.o: main.cpp calculator.h \
 		ui_calculator.h

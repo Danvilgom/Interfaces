@@ -2,18 +2,17 @@
 #define CALCULATOR_H
 
 #include <QDialog>
-
 #include "ui_calculator.h"
 
-class Calculator : public QDialog, public Ui::Calculator
-{
+class Calculator : public QDialog, public Ui::Dialog {
     Q_OBJECT
 
 public:
     Calculator(QWidget *parent = 0);
 
 private slots:
-    void on_lineEdit_textChanged();
+    void ponCero();
+    void ponUno();
 };
 
 #endif
