@@ -3,8 +3,9 @@
 Calculator::Calculator(QWidget * parent) : QWidget(parent){
 
   setupUi(this);
-      connect(b0,SIGNAL(clicked()),this,SLOT(ponCero()));
-      connect(b1,SIGNAL(clicked()),this,SLOT(ponUno()));
+      connect(btn_1,SIGNAL(clicked()),this,SLOT(ponCero()));
+      connect(btn_2,SIGNAL(clicked()),this,SLOT(ponUno()));
+      connect(btn_3,SIGNAL(clicked()),this,SLOT()
   }
 
   void Calculator::ponCero(){
