@@ -7,6 +7,9 @@
 #include <QAction>
 #include <QMenu>
 #include <QMenuBar>
+#include <QToolBar>
+#include <QLabel>
+#include <QStatusBar>
 
 class VentanaPrincipal : public QMainWindow
 {
@@ -16,9 +19,23 @@ public:
     VentanaPrincipal(QWidget *parent = 0, Qt::WindowFlags flags = 0);
 
 private:
+  void createActions();
+  void createMenus();
+  void createToolBar();
+  void createStatusBar();
   QTextEdit *editorCentral;
   QAction *accionSalir;
+  QAction *accionAbrir;
+  QAction *accionGuardar;
+  QAction *accionNuevo;
   QMenu *fileMenu;
+  QToolBar *barraSalir;
+  QToolBar *barraArchivo;
+  QLabel *etiquetaEstado;
+
+private slots:
+  void slotActualizarBarraEstado();
+  void slotNuevo();
 };
 
 #endif
