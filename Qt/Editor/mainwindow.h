@@ -23,6 +23,7 @@ private:
   void createMenus();
   void createToolBar();
   void createStatusBar();
+  bool documentoModificado;
   QTextEdit *editorCentral;
   QAction *accionSalir;
   QAction *accionAbrir;
@@ -36,6 +37,7 @@ private:
 private slots:
   void slotActualizarBarraEstado();
   void slotNuevo();
+  void slotAbrir();
 };
 
 #endif

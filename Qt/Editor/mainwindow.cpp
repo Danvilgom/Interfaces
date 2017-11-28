@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include <QMessageBox>
+#include  <QFileDialog>
 
 VentanaPrincipal::VentanaPrincipal(
   QWidget *parent,
@@ -7,6 +8,7 @@ VentanaPrincipal::VentanaPrincipal(
 {
 
   editorCentral = new QTextEdit;
+  documentoModificado = false;
 
   setCentralWidget(editorCentral);
   setWindowIcon(QIcon("icon.png"));
@@ -38,9 +40,9 @@ void VentanaPrincipal::createActions() {
   accionNuevo->setShortcut(tr("Ctrl+N"));
 
   connect(accionSalir,SIGNAL(triggered()),this, SLOT(close()));
-  connect(accionAbrir,SIGNAL(triggered()),this, SLOT(close()));
+  connect(accionAbrir,SIGNAL(triggered()),this, SLOT(slotAbrir()));
   connect(accionGuardar,SIGNAL(triggered()),this, SLOT(close()));
-  connect(accionNuevo,SIGNAL(triggered()),this, SLOT(close()));
+  connect(accionNuevo,SIGNAL(triggered()),this, SLOT(slotNuevo()));
 }
 
 void VentanaPrincipal::createMenus() {
@@ -64,28 +66,48 @@ void VentanaPrincipal::createToolBar() {
   barraSalir->addAction(accionSalir);
 }
 
-void VentanaPrincipal::createStatusBar(){
+void VentanaPrincipal::createStatusBar() {
   etiquetaEstado = new QLabel("Hola");
   statusBar()->addWidget(etiquetaEstado);
 }
 
 void VentanaPrincipal::slotNuevo() {
-  //editorCentral->document()->clear();
+  if (!documentoModificado) {
+      editorCentral->document()->clear();
+      return;
+  }
 
   int respuesta = QMessageBox::warning(this, tr("nuevo doc"),
   tr("Borro el documento ?"), QMessageBox::Yes | QMessageBox::No);
 
-  if (respuesta == QMessageBox::Yes)
+
+  if (respuesta == QMessageBox::Yes) {
     editorCentral->document()->clear();
+    documentoModificado = false;
+  }
 }
 
-void VentanaPrincipal::slotActualizarBarraEstado(){
+void VentanaPrincipal::slotActualizarBarraEstado() {
   QTextDocument * documento;
   documento = editorCentral->document();
 
+  documentoModificado = true;
   int numLineas;
   numLineas = documento->lineCount();
 
   QString texto("Modificado\tLineas: " + QString::number(numLineas));
   etiquetaEstado->setText(texto);
+}
+
+void VentanaPrincipal::slotAbrir() {
+  QString fileName = QFileDialog::getOpenFileName(this,
+                                   tr("Abrir un documentillo"), ".",
+                                   tr("Fisheros de tejto (*.txt)"));
+
+
+  if (!fileName.isEmpty()){
+      //abrirFichero(fileName);
+      editorCentral->document()->clear();
+      editorCentral->append(fileName);
+  }
 }
