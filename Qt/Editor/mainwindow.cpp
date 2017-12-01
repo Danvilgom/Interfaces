@@ -1,6 +1,9 @@
 #include "mainwindow.h"
 #include <QMessageBox>
-#include  <QFileDialog>
+#include <QFileDialog>
+#include <QCloseEvent>
+#include <QTextStream>
+#include <QStringListIterator>
 
 VentanaPrincipal::VentanaPrincipal(
   QWidget *parent,
@@ -39,6 +42,17 @@ void VentanaPrincipal::createActions() {
   accionNuevo->setIcon(QIcon("new.png"));
   accionNuevo->setShortcut(tr("Ctrl+N"));
 
+  for (int i = 0; i < MAX_RECENT_FILES; i++) {
+    accionesFicherosRecientes[i] = new QAction(
+                                        QString("action") +
+                                        QString::number(i),
+                                        this);
+
+    connect(accionesFicherosRecientes[i],
+      SIGNAL(triggered()),this,
+      SLOT(slotAbrirFicheroReciente()));
+  }
+
   connect(accionSalir,SIGNAL(triggered()),this, SLOT(close()));
   connect(accionAbrir,SIGNAL(triggered()),this, SLOT(slotAbrir()));
   connect(accionGuardar,SIGNAL(triggered()),this, SLOT(close()));
@@ -51,6 +65,10 @@ void VentanaPrincipal::createMenus() {
   fileMenu->addAction(accionAbrir);
   fileMenu->addAction(accionGuardar);
   fileMenu->addAction(accionNuevo);
+
+  for (int i = 0; i < MAX_RECENT_FILES; i++) {
+    fileMenu->addAction(accionesFicherosRecientes[i]);
+  }
 
   editorCentral->addAction(accionSalir);
   editorCentral->setContextMenuPolicy(Qt::ActionsContextMenu);
@@ -104,10 +122,83 @@ void VentanaPrincipal::slotAbrir() {
                                    tr("Abrir un documentillo"), ".",
                                    tr("Fisheros de tejto (*.txt)"));
 
-
   if (!fileName.isEmpty()){
-      //abrirFichero(fileName);
-      editorCentral->document()->clear();
-      editorCentral->append(fileName);
+      abrirFichero(fileName);
   }
+}
+
+bool VentanaPrincipal::abrirFichero(QString nombreFichero) {
+  editorCentral->document()->clear();
+  QFile fichero(nombreFichero);
+
+  if (!fichero.open(QIODevice::ReadOnly)) {
+                QMessageBox::warning(this, tr("Editor"),
+                             tr("Cannot read file %1:\n%2.")
+                             .arg(fichero.fileName())
+                             .arg(fichero.errorString()));
+     return false;
+  }
+
+  QTextStream stream(&fichero);
+
+  while (!stream.atEnd()){
+    editorCentral->append(stream.readLine());
+  }
+
+  documentoModificado = false;
+  establecerFicheroActual(nombreFichero);
+
+  return true;
+}
+
+void VentanaPrincipal::closeEvent (QCloseEvent * event) {
+  QTextDocument * documento;
+  documento = editorCentral->document();
+  int numLineas;
+  numLineas = documento->lineCount();
+
+  if (documentoModificado) {
+    int respuesta = QMessageBox::warning(this, tr("Editor"),
+                            tr("The document has been modified.\n"
+                                "Do you want to save your changes?"),
+                            QMessageBox::Yes | QMessageBox::No
+                            | QMessageBox::Cancel);
+
+    if (respuesta == QMessageBox::No) {
+      event->accept();
+    } else if (respuesta == QMessageBox::Cancel) {
+      event->ignore();
+    } else {
+      //editorCentral->append(QString("Guardado"));
+      QString texto("Guardado\tLineas: " + QString::number(numLineas));
+      etiquetaEstado->setText(texto);
+      documentoModificado = false;
+      event->ignore();
+    }
+  }
+}
+
+void VentanaPrincipal::establecerFicheroActual(QString ruta) {
+  ficherosRecientes.removeAll(ruta);
+  ficherosRecientes.prepend(ruta);
+
+  QMutableStringListIterator i(ficherosRecientes);
+
+  while (i.hasNext()) {
+    if (!QFile::exists(i.next()))
+      i.remove();
+  }
+
+  if (ficherosRecientes.size() > MAX_RECENT_FILES) {
+    ficherosRecientes.removeAt(MAX_RECENT_FILES);
+  }
+
+  QStringListIterator ii(ficherosRecientes);
+  while (ii.hasNext()) {
+    editorCentral->append(ii.next());
+  }
+}
+
+void VentanaPrincipal::slotAbrirFicheroReciente() {
+  editorCentral->append(QString("Abierto fichero reciente."));
 }
