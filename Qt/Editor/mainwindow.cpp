@@ -1,4 +1,5 @@
 #include "mainwindow.h"
+#include "finddialog.h"
 #include <QMessageBox>
 #include <QFileDialog>
 #include <QCloseEvent>
@@ -42,12 +43,18 @@ void VentanaPrincipal::createActions() {
   accionNuevo->setIcon(QIcon("new.png"));
   accionNuevo->setShortcut(tr("Ctrl+N"));
 
+  accionBuscar = new QAction(tr("&Buscar"), this);
+  accionBuscar->setIcon(QIcon("find.png"));
+  accionBuscar->setShortcut(tr("Ctrl+F"));
+
   for (int i = 0; i < MAX_RECENT_FILES; i++) {
     accionesFicherosRecientes[i] = new QAction(
                                         QString("action") +
                                         QString::number(i),
                                         this);
 
+
+    accionesFicherosRecientes[i]->setVisible(false);
     connect(accionesFicherosRecientes[i],
       SIGNAL(triggered()),this,
       SLOT(slotAbrirFicheroReciente()));
@@ -57,6 +64,7 @@ void VentanaPrincipal::createActions() {
   connect(accionAbrir,SIGNAL(triggered()),this, SLOT(slotAbrir()));
   connect(accionGuardar,SIGNAL(triggered()),this, SLOT(close()));
   connect(accionNuevo,SIGNAL(triggered()),this, SLOT(slotNuevo()));
+  connect(accionBuscar,SIGNAL(triggered()),this, SLOT(slotBuscar()));
 }
 
 void VentanaPrincipal::createMenus() {
@@ -65,6 +73,9 @@ void VentanaPrincipal::createMenus() {
   fileMenu->addAction(accionAbrir);
   fileMenu->addAction(accionGuardar);
   fileMenu->addAction(accionNuevo);
+
+  editMenu = menuBar()->addMenu(tr("&Editar"));
+  editMenu->addAction(accionBuscar);
 
   for (int i = 0; i < MAX_RECENT_FILES; i++) {
     fileMenu->addAction(accionesFicherosRecientes[i]);
@@ -193,12 +204,53 @@ void VentanaPrincipal::establecerFicheroActual(QString ruta) {
     ficherosRecientes.removeAt(MAX_RECENT_FILES);
   }
 
+  for (int i = 0; i < MAX_RECENT_FILES; i++) {
+    accionesFicherosRecientes[i]->setVisible(false);
+  }
+
   QStringListIterator ii(ficherosRecientes);
+  int indice = 0;
+
   while (ii.hasNext()) {
-    editorCentral->append(ii.next());
+    QString ruta = ii.next();
+    QString nombreCorto = QFileInfo(ruta).fileName();
+    accionesFicherosRecientes[indice]->setText(nombreCorto);
+    accionesFicherosRecientes[indice]->setVisible(true);
+    editorCentral->append(ruta);
+    indice++;
   }
 }
 
 void VentanaPrincipal::slotAbrirFicheroReciente() {
+  QAction *culpable = qobject_cast<QAction *> (sender());
   editorCentral->append(QString("Abierto fichero reciente."));
+}
+
+void VentanaPrincipal::slotBuscar() {
+  FindDialog *fd = new FindDialog(this);
+  fd->show();
+
+  /*
+  connect(editorCentral, SIGNAL(textChanged()),
+          this, SLOT(slotActualizarBarraEstado()));
+  */
+}
+
+void VentanaPrincipal::slotBuscarNext(const QString &str, Qt::CaseSensitivity cs) {
+  //FindDialog *nextDialog = new FindDialog(this);
+  //connect(nextDialog.SIGNAL(findNext(const QString&, )))
+  #ifdef NOCOMPILA
+  editorCentral->append(str);
+  QTextDocument::FindFlags flags = 0;
+
+  if (cs == Qt::CaseSensitive) {
+    flags = flags | QTextDocument::FindCaseSensitively;
+  }
+
+  editorCentral->find(str, flags);
+  #endif
+}
+
+void VentanaPrincipal::slotBuscarPrevious(const QString &str, Qt::CaseSensitivity cs) {
+
 }

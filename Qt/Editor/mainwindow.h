@@ -37,7 +37,9 @@ private:
   QAction *accionGuardar;
   QAction *accionNuevo;
   QAction *accionesFicherosRecientes[MAX_RECENT_FILES];
+  QAction *accionBuscar;
   QMenu *fileMenu;
+  QMenu *editMenu;
   QToolBar *barraSalir;
   QToolBar *barraArchivo;
   QLabel *etiquetaEstado;
@@ -48,7 +50,10 @@ private slots:
   void slotActualizarBarraEstado();
   void slotNuevo();
   void slotAbrir();
+  void slotBuscar();
   void slotAbrirFicheroReciente();
+  void slotBuscarNext(const QString &str, Qt::CaseSensitivity cs);
+  void slotBuscarPrevious(const QString &str, Qt::CaseSensitivity cs);
 };
 
 #endif
