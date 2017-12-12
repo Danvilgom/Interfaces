@@ -47,6 +47,8 @@ void VentanaPrincipal::createActions() {
   accionBuscar->setIcon(QIcon("find.png"));
   accionBuscar->setShortcut(tr("Ctrl+F"));
 
+  accionDeshacer = new QAction(tr("&Deshacer"), this);
+
   for (int i = 0; i < MAX_RECENT_FILES; i++) {
     accionesFicherosRecientes[i] = new QAction(
                                         QString("action") +
@@ -65,6 +67,7 @@ void VentanaPrincipal::createActions() {
   connect(accionGuardar,SIGNAL(triggered()),this, SLOT(close()));
   connect(accionNuevo,SIGNAL(triggered()),this, SLOT(slotNuevo()));
   connect(accionBuscar,SIGNAL(triggered()),this, SLOT(slotBuscar()));
+  connect(accionDeshacer,SIGNAL(triggered()),this, SLOT(slotDeshacer()));
 }
 
 void VentanaPrincipal::createMenus() {
@@ -76,6 +79,7 @@ void VentanaPrincipal::createMenus() {
 
   editMenu = menuBar()->addMenu(tr("&Editar"));
   editMenu->addAction(accionBuscar);
+  editMenu->addAction(accionDeshacer);
 
   for (int i = 0; i < MAX_RECENT_FILES; i++) {
     fileMenu->addAction(accionesFicherosRecientes[i]);
@@ -227,13 +231,14 @@ void VentanaPrincipal::slotAbrirFicheroReciente() {
 }
 
 void VentanaPrincipal::slotBuscar() {
-  FindDialog *fd = new FindDialog(this);
-  fd->show();
+  FindDialog *dialog = new FindDialog(this);
 
-  /*
-  connect(editorCentral, SIGNAL(textChanged()),
-          this, SLOT(slotActualizarBarraEstado()));
-  */
+  connect(dialog,SIGNAL(findNext(const QString &, Qt::CaseSensitivity)),
+          this, SLOT(slotBuscarNext(const QString &, Qt::CaseSensitivity)));
+  connect(dialog,SIGNAL(findPrevious(const QString &, Qt::CaseSensitivity)),
+          this, SLOT(slotBuscarPrevious(const QString &, Qt::CaseSensitivity)));
+
+  dialog->show();
 }
 
 void VentanaPrincipal::slotBuscarNext(const QString &str, Qt::CaseSensitivity cs) {
@@ -252,5 +257,9 @@ void VentanaPrincipal::slotBuscarNext(const QString &str, Qt::CaseSensitivity cs
 }
 
 void VentanaPrincipal::slotBuscarPrevious(const QString &str, Qt::CaseSensitivity cs) {
+  editorCentral->find(str,QTextDocument::FindBackward);
+}
 
+void VentanaPrincipal::slotDeshacer() {
+  //Dialog *
 }

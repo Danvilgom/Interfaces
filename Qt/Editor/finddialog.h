@@ -10,8 +10,8 @@ class FindDialog : public QDialog
 {
      Q_OBJECT
 
-     FindDialog(QWidget *parent = 0);
  public:
+     FindDialog(QWidget *parent = 0);
 
      QLabel *label;
      QLineEdit *lineEdit;
@@ -20,8 +20,7 @@ class FindDialog : public QDialog
      QPushButton *findButton;
      QPushButton *closeButton;
 
-
-signals:
+ signals:
      void findNext(const QString &str, Qt::CaseSensitivity cs);
      void findPrevious(const QString &str, Qt::CaseSensitivity cs);
 
@@ -30,4 +29,5 @@ signals:
      void enableFindButton(const QString &text);
 
  };
+
 #endif
