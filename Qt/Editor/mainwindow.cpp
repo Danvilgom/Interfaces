@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "finddialog.h"
+#include "dialogodeshacer.h"
 #include <QMessageBox>
 #include <QFileDialog>
 #include <QCloseEvent>
@@ -261,5 +262,7 @@ void VentanaPrincipal::slotBuscarPrevious(const QString &str, Qt::CaseSensitivit
 }
 
 void VentanaPrincipal::slotDeshacer() {
-  //Dialog *
+  DialogoDeshacer *dialog = new DialogoDeshacer(this);
+  dialog->puntero(editorCentral);
+  dialog->show();
 }

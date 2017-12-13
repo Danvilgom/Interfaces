@@ -25,10 +25,10 @@ private:
   void createMenus();
   void createToolBar();
   void createStatusBar();
-  bool abrirFichero(QString fileName);
   void closeEvent(QCloseEvent * event);
   void establecerFicheroActual(QString ruta);
 
+  bool abrirFichero(QString fileName);
   bool documentoModificado;
 
   QTextEdit *editorCentral;
@@ -38,6 +38,7 @@ private:
   QAction *accionNuevo;
   QAction *accionesFicherosRecientes[MAX_RECENT_FILES];
   QAction *accionBuscar;
+  QAction *accionDeshacer;
   QMenu *fileMenu;
   QMenu *editMenu;
   QToolBar *barraSalir;
@@ -51,6 +52,7 @@ private slots:
   void slotNuevo();
   void slotAbrir();
   void slotBuscar();
+  void slotDeshacer();
   void slotAbrirFicheroReciente();
   void slotBuscarNext(const QString &str, Qt::CaseSensitivity cs);
   void slotBuscarPrevious(const QString &str, Qt::CaseSensitivity cs);

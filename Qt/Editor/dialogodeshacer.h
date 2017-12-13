@@ -1,20 +1,22 @@
 #ifndef DIALOGODESHACER_H
 #define DIALOGODESHACER_H
 #include <QDialog>
+#include <QTextEdit>
 #include "ui_dialogodeshacer.h"
 
-class Dialog : public QDialog, public Ui::DialogoDeshacer
+class DialogoDeshacer : public QDialog, public Ui::DialogoDeshacer
 {
      Q_OBJECT
 
  public:
      DialogoDeshacer(QWidget *parent = 0);
-     void puntero(QTextEdit *editor);
-     QTextEdit * Editor;
+     void puntero(QTextEdit *);
+     QTextEdit *editor;
 
  private slots:
-     void DeshacerSlot(QTextEdit *editor);
-
+     void DeshacerSlot();
+     void slotDisabledDeshacer(bool);
+     void slotDisabledRehacer(bool);
  };
 
 #endif
