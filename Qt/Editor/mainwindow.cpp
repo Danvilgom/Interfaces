@@ -111,8 +111,8 @@ void VentanaPrincipal::slotNuevo() {
       return;
   }
 
-  int respuesta = QMessageBox::warning(this, tr("nuevo doc"),
-  tr("Borro el documento ?"), QMessageBox::Yes | QMessageBox::No);
+  int respuesta = QMessageBox::warning(this, tr("Nuevo documento"),
+  tr("Quiere borrar el documento?"), QMessageBox::Yes | QMessageBox::No);
 
 
   if (respuesta == QMessageBox::Yes) {

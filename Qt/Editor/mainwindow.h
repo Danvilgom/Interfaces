@@ -56,6 +56,7 @@ private slots:
   void slotAbrirFicheroReciente();
   void slotBuscarNext(const QString &str, Qt::CaseSensitivity cs);
   void slotBuscarPrevious(const QString &str, Qt::CaseSensitivity cs);
+  void slotDeshacer();
 };
 
 #endif

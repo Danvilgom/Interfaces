@@ -1,7 +1,11 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'finddialog.h'
 **
+<<<<<<< HEAD
 ** Created by: The Qt Meta Object Compiler version 67 (Qt 5.9.1)
+=======
+** Created by: The Qt Meta Object Compiler version 67 (Qt 5.7.1)
+>>>>>>> Aplicacion bolas
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
@@ -12,14 +16,21 @@
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'finddialog.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 67
+<<<<<<< HEAD
 #error "This file was generated using the moc from 5.9.1. It"
+=======
+#error "This file was generated using the moc from 5.7.1. It"
+>>>>>>> Aplicacion bolas
 #error "cannot be used with the include files from this version of Qt."
 #error "(The moc has changed too much.)"
 #endif
 
 QT_BEGIN_MOC_NAMESPACE
+<<<<<<< HEAD
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
+=======
+>>>>>>> Aplicacion bolas
 struct qt_meta_stringdata_FindDialog_t {
     QByteArrayData data[10];
     char stringdata0[95];
@@ -115,7 +126,11 @@ void FindDialog::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
 
 const QMetaObject FindDialog::staticMetaObject = {
     { &QDialog::staticMetaObject, qt_meta_stringdata_FindDialog.data,
+<<<<<<< HEAD
       qt_meta_data_FindDialog,  qt_static_metacall, nullptr, nullptr}
+=======
+      qt_meta_data_FindDialog,  qt_static_metacall, Q_NULLPTR, Q_NULLPTR}
+>>>>>>> Aplicacion bolas
 };
 
 
@@ -126,7 +141,11 @@ const QMetaObject *FindDialog::metaObject() const
 
 void *FindDialog::qt_metacast(const char *_clname)
 {
+<<<<<<< HEAD
     if (!_clname) return nullptr;
+=======
+    if (!_clname) return Q_NULLPTR;
+>>>>>>> Aplicacion bolas
     if (!strcmp(_clname, qt_meta_stringdata_FindDialog.stringdata0))
         return static_cast<void*>(const_cast< FindDialog*>(this));
     return QDialog::qt_metacast(_clname);
@@ -152,15 +171,25 @@ int FindDialog::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 // SIGNAL 0
 void FindDialog::findNext(const QString & _t1, Qt::CaseSensitivity _t2)
 {
+<<<<<<< HEAD
     void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
+=======
+    void *_a[] = { Q_NULLPTR, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
+>>>>>>> Aplicacion bolas
     QMetaObject::activate(this, &staticMetaObject, 0, _a);
 }
 
 // SIGNAL 1
 void FindDialog::findPrevious(const QString & _t1, Qt::CaseSensitivity _t2)
 {
+<<<<<<< HEAD
     void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
     QMetaObject::activate(this, &staticMetaObject, 1, _a);
 }
 QT_WARNING_POP
+=======
+    void *_a[] = { Q_NULLPTR, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
+    QMetaObject::activate(this, &staticMetaObject, 1, _a);
+}
+>>>>>>> Aplicacion bolas
 QT_END_MOC_NAMESPACE
