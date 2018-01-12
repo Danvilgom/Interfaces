@@ -12,7 +12,7 @@ MainWindow::MainWindow ( QWidget * parent , Qt::WindowFlags flags) :
 
           temporizador = new QTimer();
           temporizador->setSingleShot(false);
-          temporizador->setInterval(50);
+          temporizador->setInterval(10);
 
           connect(temporizador,SIGNAL(timeout()),this, SLOT(slotRepintar()));
           temporizador->start();
@@ -20,10 +20,10 @@ MainWindow::MainWindow ( QWidget * parent , Qt::WindowFlags flags) :
           inicializarBolas();
 }
 
-void MainWindow::paintEvent( QPaintEvent * e ) {
+void MainWindow::paintEvent( QPaintEvent *e ) {
   QPainter pintor(this);
-  for (int i = 0; i < 10; i++) {
-    pintor.setBrush(QColor("red"));
+  for (int i = 0; i < bolas.size(); i++) {
+    pintor.setBrush(QColor("green"));
     pintor.drawEllipse(bolas[i]->posX,bolas[i]->posY, 40 ,40);
     bolas[i]->posX = bolas[i]->posX + bolas[i]->velX;
     bolas[i]->posY = bolas[i]->posY + bolas[i]->velY;
@@ -49,7 +49,7 @@ void MainWindow::slotRepintar() {
 }
 
 void MainWindow::inicializarBolas() {
-  for (int i = 0; i < 10; i++) {
+  for (int i = 0; i < 100; i++) {
     Bola *b = new Bola();
     b->posX = random()% width();
     b->posY = random()% height();
