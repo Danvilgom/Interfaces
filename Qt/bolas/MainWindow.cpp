@@ -48,7 +48,7 @@ void MainWindow::paintEvent( QPaintEvent *e ) {
   }
 
   bolaJugador->mueve(width(), height());
-  pintor.setBrush(QColor("cyan"));
+  pintor.setBrush(QColor("red"));
   pintor.drawEllipse(bolaJugador->posX,bolaJugador->posY, Bola::diametro, Bola::diametro);
 }
 
