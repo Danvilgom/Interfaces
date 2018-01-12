@@ -4,7 +4,10 @@
 class Bola {
 
 public:
-    float posX, posY,velX,velY;
+    Bola(float x, float y, float vx, float vy);
+    float posX, posY, velX, velY;
+    void mueve(int, int);
+    static int diametro;
 };
 
 #endif
