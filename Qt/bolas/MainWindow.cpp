@@ -41,20 +41,29 @@ void MainWindow::createMenus() {
 
 void MainWindow::paintEvent( QPaintEvent *e ) {
   QPainter pintor(this);
+
   for (int i = 0; i < bolas.size(); i++) {
-    pintor.setBrush(QColor("green"));
-    pintor.drawEllipse(bolas[i]->posX,bolas[i]->posY, Bola::diametro ,Bola::diametro);
+    bolas[i]->pintar(pintor);
     bolas[i]->mueve(width(), height());
   }
 
   bolaJugador->mueve(width(), height());
-  pintor.setBrush(QColor("red"));
+  pintor.setBrush(QBrush(Qt::black));
   pintor.drawEllipse(bolaJugador->posX,bolaJugador->posY, Bola::diametro, Bola::diametro);
 }
 
 void MainWindow::slotRepintar() {
+  for (int i = 0; i < bolas.size(); i++) {
+    for (int j = 0; j < bolas.size(); j++) {
+      if (bolas[i]->choca(bolas[j])) {
+          bolas[i]->vida--;
+          bolas[j]->vida--;
+      }//if
+    }
+  }
+
   update();
-  setFocus();
+  //setFocus();
 }
 
 void MainWindow::inicializarBolas() {
