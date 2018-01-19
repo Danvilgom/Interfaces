@@ -30,13 +30,17 @@ MainWindow::MainWindow ( QWidget * parent , Qt::WindowFlags flags) :
 
 void MainWindow::createActions() {
   accionInformacion = new QAction(tr("&Ver Info"), this);
+  accionPosInfo = new QAction(tr("&Información de las posiciones"))
 
   connect(accionInformacion,SIGNAL(triggered()),this, SLOT(slotMostrarDialogoInfo()));
+  connect(accionPosInfo,SIGNAL(triggered()),this, SLOT(slotDInfoBolas()));
 }
 
 void MainWindow::createMenus() {
   menuArchivo = menuBar()->addMenu("Archivo");
+  menuPosInfo = menuBar()->addMenu("Info");
   menuArchivo->addAction(accionInformacion);
+  menuPosInfo->addAction(accionPosInfo);
 }
 
 void MainWindow::paintEvent( QPaintEvent *e ) {
@@ -96,4 +100,10 @@ void MainWindow::slotMostrarDialogoInfo() {
   DInformacion *dialogo = new DInformacion();
   dialogo->pasarInfo(bolas.size(),width(),height());
   dialogo->show();
+}
+
+void MainWindow::slotDInfoBolas() {
+  if (dInfoBolas == NULL) {
+    dInfoBolas = new DInfoBolas(bolas, this);
+  }
 }

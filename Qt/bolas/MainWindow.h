@@ -37,6 +37,7 @@ public slots:
 
   void slotRepintar();
   void slotMostrarDialogoInfo();
+  void slotDInfoBolas();
 };
 
 #endif
